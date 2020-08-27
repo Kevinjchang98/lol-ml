@@ -7,8 +7,22 @@ import csv
 #TODO: Deal with possible errors in get requests
 
 def main():
+    # First set of data from a single player
     matchList = getMatchList('dyrus')
-    getMatchDetails(matchList)
+    nameList = getMatchDetails(matchList)
+
+    # New match list generated from first player
+    newMatchList = []
+
+    # Remove duplicate names
+    nameList = list(set(nameList))
+
+    # Get a match list for each of the names in the nameList
+    for player in nameList:
+        newMatchList.append(getMatchList(player))
+
+    # Write data for each match in the newMatchList
+    getMatchDetails(newMatchList)
 
 def getMatchList(name):
     # Initial request for basic info
@@ -19,7 +33,7 @@ def getMatchList(name):
     accountId = data['accountId']
 
     # Get match list
-    response = requests.get('https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountId + '?api_key=' + apiKey.apiKey, timeout = 5)
+    response = requests.get('https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountId + '?queue=420' + '&api_key=' + apiKey.apiKey, timeout = 5)
     matchList = response.json()
 
     return matchList
@@ -28,8 +42,11 @@ def getMatchDetails(matchList):
     # Initialize returnList which is final list to be saved
     returnList = []
 
+    # Initialize nameList which is list of names of players in these games
+    nameList = []
+
     # For each match in the match list, append all 10 player's data to returnList object
-    for match in matchList['matches']:
+    for match in matchList['matches'][0:2]:
         print('Match ID: ' + str(match['gameId']))
         response = requests.get('https://na1.api.riotgames.com/lol/match/v4/matches/' + str(match['gameId']) + '?api_key=' + apiKey.apiKey, timeout = 5)
         time.sleep(5) # 5 second delay for rate limit
@@ -38,6 +55,9 @@ def getMatchDetails(matchList):
         for player in data['participants']:
             # print(player['participantId'])
             returnList.append(player['stats'])
+
+        for player in data['participantIdentities']:
+            nameList.append(player['player']['summonerName'])
 
         # Convert list of dict to pandas dataframe
         returnDf = pd.DataFrame(returnList)
@@ -50,6 +70,8 @@ def getMatchDetails(matchList):
         # Append to data.csv
         with open('data.csv', 'a') as f:
             returnDf.to_csv(f, index=False, header=False)
+
+        return nameList
 
 if __name__ == "__main__":
     main()
