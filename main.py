@@ -51,7 +51,7 @@ def getMatchDetails(matchList):
     nameList = []
 
     # For each match in the match list, append all 10 player's data to returnList object
-    for match in matchList['matches'][0:5]:
+    for match in matchList['matches']:
         print('    Getting data for match ' + str(match['gameId']))
         response = requests.get('https://na1.api.riotgames.com/lol/match/v4/matches/' + str(match['gameId']) + '?api_key=' + apiKey.apiKey, timeout = 5)
         if response.status_code == 200:
