@@ -77,7 +77,7 @@ def getMatchDetails(matchList):
             with open('data.csv', 'a') as f:
                 returnDf.to_csv(f, index=False, header=False)
         else:
-            print('getMatchDetails error on match' + match['gameId'])
+            print('getMatchDetails error on match' + str(match['gameId']))
             time.sleep(120) # 2 min sleep if error occurs
 
     return nameList
