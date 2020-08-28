@@ -4,28 +4,34 @@ import time
 import pandas as pd
 import csv
 
+# NOTE: Run prepCsv.py first to prep header row. That will delete any existing data.csv, however.
+
 def main():
     # First set of data from a single player
+    print('Getting matches for dyrus')
     matchList = getMatchList('dyrus')
     nameList = getMatchDetails(matchList)
-
-    print("First run okay")
 
     # New match list generated from first input name
     newMatchList = []
 
+    # For each player, we get a new list of matches
     for player in nameList:
-        print('Getting details for ' + player)
+        print('Getting matches for ' + player)
         newMatchList.append(getMatchList(player))
 
+    # Remove duplicate names in nameList
+    nameList = list(set(nameList))
+    print('New match list created')
+
     getMatchDetails(newMatchList)
+    print('Complete')
 
 def getMatchList(name):
     # Initial request for basic info
     response = requests.get('https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + name + '?api_key=' + apiKey.apiKey, timeout = 5)
     if response.status_code == 200:
         data = response.json()
-
 
         # Set account Id needed to get match lists
         accountId = data['accountId']
@@ -47,6 +53,7 @@ def getMatchDetails(matchList):
 
     # For each match in the match list, append all 10 player's data to returnList object
     for match in matchList['matches']:
+        print('    Getting data for match ' + str(match['gameId']))
         response = requests.get('https://na1.api.riotgames.com/lol/match/v4/matches/' + str(match['gameId']) + '?api_key=' + apiKey.apiKey, timeout = 5)
         if response.status_code == 200:
             time.sleep(5) # 5 second delay for rate limit
