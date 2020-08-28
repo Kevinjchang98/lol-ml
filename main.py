@@ -10,21 +10,19 @@ def main():
     # First set of data from a single player
     print('Getting matches for dyrus')
     matchList = getMatchList('dyrus')
+
     nameList = getMatchDetails(matchList)
 
-    # New match list generated from first input name
-    newMatchList = []
+    # Remove duplicate names in nameList
+    nameList = list(set(nameList))
 
     # For each player, we get a new list of matches
     for player in nameList:
         print('Getting matches for ' + player)
-        newMatchList.append(getMatchList(player))
+        newMatchList = []
+        newMatchList = getMatchList(player)
+        getMatchDetails(newMatchList)
 
-    # Remove duplicate names in nameList
-    nameList = list(set(nameList))
-    print('New match list created')
-
-    getMatchDetails(newMatchList)
     print('Complete')
 
 def getMatchList(name):
@@ -43,6 +41,7 @@ def getMatchList(name):
         return matchList
     else:
         print('getMatchList error')
+        time.sleep(120) # 2 min sleep if error occurs
 
 def getMatchDetails(matchList):
     # Initialize returnList which is final list to be saved
@@ -52,7 +51,7 @@ def getMatchDetails(matchList):
     nameList = []
 
     # For each match in the match list, append all 10 player's data to returnList object
-    for match in matchList['matches']:
+    for match in matchList['matches'][0:5]:
         print('    Getting data for match ' + str(match['gameId']))
         response = requests.get('https://na1.api.riotgames.com/lol/match/v4/matches/' + str(match['gameId']) + '?api_key=' + apiKey.apiKey, timeout = 5)
         if response.status_code == 200:
@@ -79,6 +78,7 @@ def getMatchDetails(matchList):
                 returnDf.to_csv(f, index=False, header=False)
         else:
             print('getMatchDetails error on match' + match['gameId'])
+            time.sleep(120) # 2 min sleep if error occurs
 
     return nameList
 
