@@ -3,6 +3,7 @@ test.txt
 data.csv
 eval.csv
 train.csv
+dataold.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
