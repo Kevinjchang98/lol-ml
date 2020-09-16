@@ -67,6 +67,7 @@ def getMatchDetails(matchList):
                 currentMatchDict = player['stats']
                 currentMatchDict['championId'] = player['championId']
 
+                # TODO: Confirm team 1 is always 0-5 and team 2 is always 6-9
                 if player['participantId'] < 6:
                     currentMatchDict['enemyChamp1'] = data['participants'][5]['championId']
                     currentMatchDict['enemyChamp2'] = data['participants'][6]['championId']
