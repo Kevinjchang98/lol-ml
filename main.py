@@ -62,7 +62,22 @@ def getMatchDetails(matchList):
                 # print(player['participantId'])
                 currentMatchDict = player['stats']
                 currentMatchDict['championId'] = player['championId']
+
+                if player['participantId'] < 6:
+                    currentMatchDict['enemyChamp1'] = data['participants'][5]['championId']
+                    currentMatchDict['enemyChamp2'] = data['participants'][6]['championId']
+                    currentMatchDict['enemyChamp3'] = data['participants'][7]['championId']
+                    currentMatchDict['enemyChamp4'] = data['participants'][8]['championId']
+                    currentMatchDict['enemyChamp5'] = data['participants'][9]['championId']
+                else:
+                    currentMatchDict['enemyChamp1'] = data['participants'][0]['championId']
+                    currentMatchDict['enemyChamp2'] = data['participants'][1]['championId']
+                    currentMatchDict['enemyChamp3'] = data['participants'][2]['championId']
+                    currentMatchDict['enemyChamp4'] = data['participants'][3]['championId']
+                    currentMatchDict['enemyChamp5'] = data['participants'][4]['championId']
+
                 returnList.append(currentMatchDict)
+
 
             for player in data['participantIdentities']:
                 nameList.append(player['player']['summonerName'])
@@ -71,7 +86,7 @@ def getMatchDetails(matchList):
             returnDf = pd.DataFrame(returnList)
 
             # Select only following columns
-            headerList = ['win', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0',	'perk0Var1',	'perk0Var2',	'perk0Var3',	'perk1',	'perk1Var1',	'perk1Var2',	'perk1Var3',	'perk2',	'perk2Var1',	'perk2Var2',	'perk2Var3',	'perk3',	'perk3Var1',	'perk3Var2',	'perk3Var3',	'perk4',	'perk4Var1',	'perk4Var2',	'perk4Var3',	'perk5',	'perk5Var1',	'perk5Var2',	'perk5Var3',	'perkPrimaryStyle',	'perkSubStyle',	'statPerk0',	'statPerk1',	'statPerk2', 'championId'
+            headerList = ['win', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0',	'perk0Var1',	'perk0Var2',	'perk0Var3',	'perk1',	'perk1Var1',	'perk1Var2',	'perk1Var3',	'perk2',	'perk2Var1',	'perk2Var2',	'perk2Var3',	'perk3',	'perk3Var1',	'perk3Var2',	'perk3Var3',	'perk4',	'perk4Var1',	'perk4Var2',	'perk4Var3',	'perk5',	'perk5Var1',	'perk5Var2',	'perk5Var3',	'perkPrimaryStyle',	'perkSubStyle',	'statPerk0',	'statPerk1',	'statPerk2', 'championId', 'enemyChamp1', 'enemyChamp2', 'enemyChamp3', 'enemyChamp4', 'enemyChamp5'
             ]
             returnDf = returnDf[headerList]
 
