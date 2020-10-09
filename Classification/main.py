@@ -95,7 +95,7 @@ def getMatchDetails(matchList):
             returnDf = returnDf[headerList]
 
             # Append to data.csv
-            with open('data.csv', 'a') as f:
+            with open('Classification/data.csv', 'a') as f:
                 returnDf.to_csv(f, index=False, header=False)
         else:
             print('getMatchDetails error on match' + str(match['gameId']))
