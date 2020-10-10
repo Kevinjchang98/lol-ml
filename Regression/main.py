@@ -91,7 +91,7 @@ def getMatchDetails(matchList):
             returnDf = pd.DataFrame(returnList)
 
             # Select only following columns
-            headerList = ['goldEarned', 'kills', 'deaths', 'assists', 'largestKillingSpree', 'largestMultiKill', 'killingSprees', 'longestTimeSpentLiving', 'doubleKills', 'tripleKills', 'quadraKills', 'totalHeal', 'visionScore', 'totalDamageTaken', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'wardsPlaced', 'wardsKilled']
+            headerList = ['goldEarned', 'kills', 'deaths', 'assists', 'largestKillingSpree', 'largestMultiKill', 'killingSprees', 'longestTimeSpentLiving', 'doubleKills', 'tripleKills', 'quadraKills', 'totalHeal', 'visionScore', 'totalDamageTaken', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'wardsPlaced', 'wardsKilled', 'championId']
             returnDf = returnDf[headerList]
 
             # Append to data.csv
